@@ -4,6 +4,7 @@ var requestHandler = require('./requestHandler');
 // function route(pathname){
 // 	console.log("about to route request for "+pathname);
 // }
+var postData = "";
 var handle = {
 	// // /: requestHandler.start,
 	// /start: requestHandler.start,
@@ -13,4 +14,4 @@ handle["/"]= requestHandler.start;
 handle["/start"] = requestHandler.start;
 handle["/upload"] = requestHandler.upload;
 handle["/proceed"] = requestHandler.proceed;
-server.start(router.route,handle);
+server.start(router.route,handle,postData);

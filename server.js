@@ -1,11 +1,15 @@
 var http = require("http");
 var url = require('url');
-function start(route,handle){
+function start(route,handle,postData){
 	 function onRequest(request, response) {
 		 console.log("Request received.");
 		 //console.log('mmt')
-		 var  postData="";
+		
 		 var pathname = url.parse(request.url).pathname;
+		 if(pathname=== '/start' || pathname === '/')
+		 {
+		 	postData="";
+		 }
 		 console.log("request for "+pathname+" received");
 		 request.setEncoding("utf8");
 
@@ -15,7 +19,7 @@ function start(route,handle){
 		 });
 		 
 		 request.addListener("end",function(){
-		 	route(pathname,handle,response,postData);
+		 	route(pathname,handle,response,postData,request);
 		 })
 		 // response.writeHead(200, {"Content-Type": "text/plain"});
 		 // //response.write("Hello World");
