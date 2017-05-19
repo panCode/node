@@ -1,34 +1,11 @@
 var exec = require("child_process").exec;
-var querystring= require("querystring");
-//var bodyparser = require("body-parser");
-function start(response,postData,request){
+var querystring= require("querystring");                                
+
+function start(response,postData,request,con){
 	console.log("Request handler 'start' was called.");
-	// var sleep = function(millisecond)
-	// {
-	// 	var starttime = new Date().getTime();
-	// 	while(new Date().getTime() < starttime + millisecond);
- 
-	// }
-	// sleep(10000);
-	//var content = "empty";
-	// exec("find /",{timeout:10000,maxBuffer: 20000*1024},function(error, stdout, stderr){
-	// 	//content = stdout;
-	// 	response.writeHead(200,{"Content-Type":"text/plain"});
-	// 	response.end(stdout); 
-	// });
+
 	var body = 
-	// '<html>'+
- //  '<head>'+
- //  '<meta http-equiv="Content-Type" content="text/html; '+
- //  'charset=UTF-8" />'+
- //  '</head>'+
- //  '<body>'+
- //  '<form action="/upload" method="post">'+
- //  '<textarea name="text" rows="20" cols="60">input text</textarea>'+
- //  '<input type="submit" value="Submit text" />'+
- //  '</form>'+
- //  '</body>'+
- //  '</html>';
+
     '<html><body>'
     + '<h1>Ticket System</h1>'
     + '<form name = "form" method="post" action="/proceed" enctype="application/x-www-form-urlencoded"><fieldset>'
@@ -44,33 +21,16 @@ function start(response,postData,request){
 
 
 }
-function proceed(response,postData,request){
+function proceed(response,postData,request,con){
 	console.log("SOMWHERE ****");
 	console.log(postData);
-	//var x=document.getElementById("form");
-
-	// var text = " ";
-	// var i = 0;
-	// response.writeHead(200,{"Content-Type": "text/html"});
-	// for(i=0;i < x.length ; ++i)
-	// {
-	// 	text = x.element[i].value ;
-	// 	response.write(text);
-	// 	text = "";
-	// }
+	
 	console.log(querystring.parse(postData));
-	response.writeHead(200,{"Content-Type": "text/html"});
-	// response.write("to edit your ticket press edit ");
-	// response.write("to confirm your ticket press submit");
-	//response.writeHead(200,{"Content-Type": "text/html"});
+	response.writeHead(200,{"Content-Type": "text/html"});	
 	var x=querystring.parse(postData);
-	//response.write("\n");
 	response.write("user name:"+x.UserName);
-	//response.write("\n");
 	response.write(", email id:"+x.Email);
-	//response.write("\n");
 	response.write(", Phone no:"+x.Phone);
-	//response.writeHead(200,{"Content-Type": "text/html"});
 	var body = 
 	'<html>'
 	+'<body>'
@@ -85,23 +45,48 @@ function proceed(response,postData,request){
 	
 	response.end(body);
 }
-function upload(response,postData,request){
+function upload(response,postData,request,con){
 	console.log("Request handler 'upload' was called.");
 	console.log(postData);
-	var x=querystring.parse(postData);
-	console.log(x["UserName"]);
-	response.writeHead(200,{"Content-Type":"text/plain"});
-	
-	response.write("you ticket has been confirmed and your details are as following\n");
-	//response.write("\n");
 
+
+    response.writeHead(200,{"Content-Type":"text/html"});
+	var x=querystring.parse(postData);
+
+
+	  var sql = "INSERT INTO customers (UserName , Email, Phone) VALUES ?";
+	  var values = [
+	  [x['UserName'],x['Email'],x['Phone']]];
+
+	  con.query(sql,[values],function(err,result){
+	  	if(err) throw err;
+	  	console.log(result);
+
+	  })
+
+	 // showing(request,response,con);
+	 var body =
+	 '<html>'
+	 +'<body>'
+	 +'<form action="/showing" method="post">'
+	 +'<button type="submit">show table</button>'
+	 +'</form>'
+	 +'</html>';
+
+	response.write("you ticket has been confirmed and your details are as following******* ");
 	response.write("user name:"+x["UserName"]);
-	response.write("\nemail id:"+x["Email"]);
-	response.write("\nPhone no"+x["Phone"]);
-	//response.write();
-	response.end(); 
-	//return "got the upload";
+	response.write(" email id:"+x["Email"]);
+	response.write(" Phone no:"+x["Phone"]);
+	response.end(body); 
+
+}
+function showing(response,postData,request,con){
+con.query('select * from customers',function(error,rows,fields){
+	response.writeHead(200,{'Content-Type':'x-application/json'});
+	response.end(JSON.stringify(rows));
+})
 }
 exports.start = start;
 exports.upload = upload;
 exports.proceed = proceed;
+exports.showing= showing;

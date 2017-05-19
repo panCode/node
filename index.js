@@ -1,17 +1,30 @@
 var server= require('./server');
 var router = require('./router');
 var requestHandler = require('./requestHandler');
-// function route(pathname){
-// 	console.log("about to route request for "+pathname);
-// }
+var mysql = require('mysql');
+
+
+var con = mysql.createConnection({
+    host: "localhost",
+    user: "root",
+    password: "Nkhi#hil3321",
+    database: "mydb"
+    });
+con.connect(function(err) {
+	  if (err) throw err;
+	  console.log("Connected!");
+	
+	  });
+
+
+
 var postData = "";
 var handle = {
-	// // /: requestHandler.start,
-	// /start: requestHandler.start,
-	// /upload: requestHandler.upload
+
 };
 handle["/"]= requestHandler.start;
 handle["/start"] = requestHandler.start;
 handle["/upload"] = requestHandler.upload;
 handle["/proceed"] = requestHandler.proceed;
-server.start(router.route,handle,postData);
+handle["/showing"] = requestHandler.showing;
+server.start(router.route,handle,postData,con);
