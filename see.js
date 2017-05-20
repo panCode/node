@@ -1,2 +1,0 @@
-require('./th');
-require('./ty');
