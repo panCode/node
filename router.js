@@ -1,19 +1,21 @@
-
+var express=require('express');
+var app = express();
 
 function route(pathname,handle,response,postData,request,con){
 	console.log("about to route request for "+pathname);
+	// if(pathname === '/test'){
+	// 	testing
+	// }
+
 	if(pathname==='/showing'){
-		var tn;
-		var i;
-		con.query('select * from customers',function(error,rows,fields){
-			//tn=JSON.stringify(rows);
-	response.writeHead(200,{'Content-Type':'text/plain'});
-	for(i=0;i<(rows.length);++i){
-	response.write((rows[i]["UserName"]));
-	response.write('\n');
-    }
-    response.end();
-});
+	handle[pathname](response,postData,request,con);
+	// app.listen(4900);
+	// app.get('/showing',function(req,res){
+	// 	con.query('select * from customers',function(error,rows,fields){
+	// 		res.json(rows);
+	// 		console.log(rows[1]['id']);
+	// 	})
+	// })
 	}
 	else if( typeof handle[pathname] ==='function')
 	{

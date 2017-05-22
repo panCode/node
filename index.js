@@ -2,6 +2,11 @@ var server= require('./server');
 var router = require('./router');
 var requestHandler = require('./requestHandler');
 var mysql = require('mysql');
+var http = require('http');
+ var fs = require('fs');
+ fs.readFile('./test.html',function(err,html){
+ 	if(err) throw err;
+ })
 
 
 var con = mysql.createConnection({
