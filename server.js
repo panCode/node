@@ -7,20 +7,13 @@ var querystring = require('querystring');
 function start(route,handle,postData,con){
 	 function onRequest(request, response) {
 		 console.log("Request received.");
-		
-		 var pathname = url.parse(request.url).pathname;
-		 if(pathname=== '/start' || pathname === '/')
-		 {
+		 var pathname = url.parse(request.url).pathname;	 
 		 	postData="";
-		 }
-
-
 		 console.log("request for "+pathname+" received");
 		 request.setEncoding("utf8");
 
 		 request.addListener("data",function(postData){
 		 	var x=querystring.parse(postData);
-		 	if(isNaN(x)){
 			 	 var sql = "INSERT INTO customers (UserName , Email, Phone) VALUES ?";
 		 		 var values = [
 		 				 [x['UserName'],x['Email'],x['Phone']]];
@@ -30,21 +23,13 @@ function start(route,handle,postData,con){
 		 		 	console.log(result);
 
 		 		 });
-			}
-			else console.log("happy''''''''");
-		 	
 		 	console.log("received post data chunk '"+postData+"'.");
 		 });
 		 
 		 request.addListener("end",function(){
 		 	route(pathname,handle,response,postData,request,con);
-		 	// app.get('/',function(req,res){
-		 	// 	res.send('working');
-		 	// 	res.end();
-		 	// })
 		 });
 	 }
-
 	 http.createServer(onRequest).listen(4900);
 
 	 console.log("Server has started.");

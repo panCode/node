@@ -7,8 +7,6 @@ var http = require('http');
  fs.readFile('./test.html',function(err,html){
  	if(err) throw err;
  })
-
-
 var con = mysql.createConnection({
     host: "localhost",
     user: "root",
@@ -20,12 +18,8 @@ con.connect(function(err) {
 	  console.log("Connected!");
 	
 	  });
-
-
-
 var postData = "";
 var handle = {
-
 };
 handle["/"]= requestHandler.start;
 handle["/start"] = requestHandler.start;
