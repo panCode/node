@@ -1,14 +1,17 @@
 
 
-function sf(req,res){
-	res.sendFile('./assets/test1.html',{root:__dirname});
-}
-function show(req,res,con){
-	con.query('select * from persons',(err,rows,fields)=>{
-		res.send(rows);
-	})
-}
+// function sf(req,res){
+// 	res.sendFile('./assets/test1.html',{root:__dirname});
+// }
+// function show(req,res,con){
+// 	con.query('select * from persons',(err,rows,fields)=>{
+// 		res.send(rows);
+// 	})
+// }
 function check(req,res,con){
+	console.log("<");
+	console.log(req.body.username);
+	console.log(req.body.password);
 	con.query('select * from persons',function(err,rows,fields){
 		var t=0;
 		for(var i=0;i<rows.length;++i){
@@ -16,12 +19,14 @@ function check(req,res,con){
 				t=1;
 				break;
 			}
-			
 		}
-
-		if(t===1)res.send('login successful');
+		if(t==1){
+			console.log('<<');
+			res.json({status:1,message:'authenticated'});
+		}
 		else{
-			res.sendFile('./assets/test2.html',{root:__dirname});
+			console.log('<>');
+			res.json({status:-1,message:'unaunthenticated'});
 		}
 });
 }
@@ -49,8 +54,8 @@ function insert(req,res,con){
 	});
 
 }
-exports.sf=sf;
-exports.show=show;
+//exports.sf=sf;
+//exports.show=show;
 exports.check=check;
 exports.reg=reg;
 exports.insert=insert;
