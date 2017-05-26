@@ -3,16 +3,39 @@
 <head>
 	<title></title>
 </head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <body>
+<div id = "make">
+<h1 id ="edit"></h1>
 <h2>Login failed !</h2>
 <form action = "/login" method="post">
-	Username:<input type = "text" name="username" value =""></br>
-	Password:<input type ="Password" name="password"></br>
-	<input type="submit" value = "try again">
+	Username:<input type = "text" name="username" id="xy" value =""></br>
+	Password:<input type ="Password" id="xyz" name="password"></br>
+	<input type="button" id="trying" value = "try again">
 </form>
 <p>It seems you are not registered with us</p>
 <form action = "/project/test3.html" method = "get">
-	<input type = "submit" value = "Sign up">
+	<input type = "button" id="add" value = "Sign up">
 </form>
+<script>
+$(document).ready(function(){
+	$("#trying").click(function(){
+		var user = $("#xy").val();
+		var pass = $("#xyz").val();
+		$.post("http://localhost:4100/login",{username:user,password:pass},function(data){
+			if(data.status==1){
+				$("#make").text("login successful!");
+			}
+			else{
+				$("#edit").text("failed!");
+			}
+		})
+	})
+	$("#add").click(function(){
+		window.location.replace("http://localhost:4100/project/test3.html");
+	})
+})
+</script>
+</div>
 </body>
 </html>

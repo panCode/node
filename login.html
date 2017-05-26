@@ -5,30 +5,34 @@
 </head>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <body>
+<p id = "change"></p>
 <div id = "log">
 <form>
-	User Name:<input type = "text" name="username"></br>
-	Password:<input type ="Password" name="password"></br>
-            <input type = "submit"  value = "login">
+	User Name:<input type = "text" name="username" id="abcd"></br>
+	Password:<input type ="Password" name="password" id="abd"></br>
+            <input type = "button" style="margin-right: 16px" id="submit" value = "login" >
+            <input type = "button" id = "add" value = "sign up">
 </form>
 <script>
-$.ajax({
-	url :"/login",
-	data:{
-		username: getElementsByName('username')[0].value,
-		password: getElementsByName('password')[0].value
-	},
-	type:"post",
-	dataType:"json",
-
-	success:function(json){
-	if(json.status==1){
-		document.getElementsById("log").innerHTML="login successfully";
-	}
-	else{
-		document.getElementsById("log").innerHTML="login unsuccessful";
-	}
- }
+$(document).ready(function(){
+	var user,pass;
+	$("#submit").click(function(){
+		user = $("#abcd").val();
+		pass = $("#abd").val();
+		$.post("http://localhost:4100/login",{username:user,password:pass},function(data){
+			if(data.status===1){
+				//alert("login successful!");
+				$('#log').text('login successful');
+			}
+			else {
+				//alert("login unsuccessful");
+				window.location.replace("http://localhost:4100/project/register.html");
+			}
+		});
+	});
+	$("#add").click(function(){
+		window.location.replace("http://localhost:4100/project/test3.html");
+	})
 });
 </script>
 </div>

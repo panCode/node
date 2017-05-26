@@ -1,13 +1,4 @@
 
-
-// function sf(req,res){
-// 	res.sendFile('./assets/test1.html',{root:__dirname});
-// }
-// function show(req,res,con){
-// 	con.query('select * from persons',(err,rows,fields)=>{
-// 		res.send(rows);
-// 	})
-// }
 function check(req,res,con){
 	console.log("<");
 	console.log(req.body.username);
@@ -30,9 +21,7 @@ function check(req,res,con){
 		}
 });
 }
-function reg(req,res){
-	res.sendFile('./assets/test3.html',{root:__dirname});
-}
+
 function insert(req,res,con){
 	con.query('select * from persons',function(err,rows,fields){
 		var t=0;
@@ -42,20 +31,18 @@ function insert(req,res,con){
 				break;
 			}
 		}
-		if(t===1)res.sendFile('./assets/test4.html',{root:__dirname});
+		if(t===1)res.json({status:-1,message:'This user name is taken try with other user name.'});
 		else {
 				var sql ="insert into persons (username, password) values ('"+req.body.username+"', '"+req.body.password+"')";
 			    con.query(sql,(err,result)=>{
 					if(err) throw err;
 					console.log(result);
 			    })
-			    res.redirect('/login');
+			    res.json({status:1,message:'abd'});
 			}
 	});
 
 }
-//exports.sf=sf;
-//exports.show=show;
+
 exports.check=check;
-exports.reg=reg;
 exports.insert=insert;

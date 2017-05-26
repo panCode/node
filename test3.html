@@ -1,14 +1,46 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title></title>
 </head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <body>
 <form action = '/insert' method = "post">
-	Name :<input type = "text"></br>
-	User Name:<input type = "text" name = "username"></br>
-	Password:<input type = "password" name = "password"></br>
-	<input type = "submit" value = "Sign Up">
+	Name :<input type = "text" id ="0"></br>
+	User Name:<input type = "text" id="1" name = "username"></br>
+	Password:<input type = "password" id="12" name = "password"></br>
+	<input type = "button" id="button" value = "Sign Up">
 </form> 
+<script>
+$(document).ready(function(){	
+	$("#button").click(function(){
+		var name = $("#0").val();
+		var user = $("#1").val();
+		var pass = $("#12").val();
+		if(!name.match(/^[a-zA-Z]+$/)) alert("Error : name is not accepted ! ");
+		else{
+			if(!user.match(/\S+@\S+\.\S+/)) alert("Error : user name not varified!");
+			else{
+				if(pass.match(/[^0-9a-z]/i))
+		    		alert("Password: Only letters and digits allowed!");
+				else if(!pass.match(/\d/))
+		   			 alert("Password: At least one digit required!");
+				else if(!pass.match(/[a-z]/i))
+		   			 alert("password: At least one letter required!");
+				else{
+					$.post("http://localhost:4100/insert",{username:user,password:pass},function(data){
+						if(data.status==-1){
+							$("#add").text(data.message);
+						}
+						else {
+							window.location.replace("http://localhost:4100/project/login.html");
+						}
+					})
+				}
+			}
+		}
+	})
+})
+</script>
+<h2 id ="add">
 </body>
 </html>

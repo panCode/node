@@ -7,8 +7,7 @@ var session = require('express-session');
 var mysql = require('mysql')
 var reqhand = require('./reqhand');
 var fs = require('fs');
-//var lindex = require('./l-index');
-//app.use();
+
 app.use(bodyparser.urlencoded({ extended: true})); 
 app.use(bodyparser.json());
 
@@ -20,20 +19,11 @@ var con = mysql.createConnection({
     });
 
 app.use('/project',express.static(__dirname +'/assets'));
-var str = 'you miss ${x} hit ${y}';
-console.log(str);
- // app.get('/login',(req,res)=>{
- // 	reqhand.sf(req,res);
- // });
-// app.get('/show',(req,res)=>{
-// 	reqhand.show(req,res,con);
-// });
+
 app.post('/login',(req,res)=>{
 	reqhand.check(req,res,con);
 });
-// app.post('/register',(req,res)=>{
-// 	reqhand.reg(req,res);
-// });
+
 app.post('/insert',(req,res)=>{
 	reqhand.insert(req,res,con);
 });
